@@ -29,15 +29,17 @@
 - name: Create sudoers
   template:
     src: sudoers.d.j2
-    dest: "/etc/sudoers.d/{{ sudoers_filename }}"
+    dest: "/etc/sudoers.d/{{ item.name }}"
     mode: 0440
     owner: root
     group: root
     validate: "/usr/sbin/visudo -cf %s"
+  with_items: "{{ sudoers }}"
   when: not sudoers_remove
 
-- name: Remove sudoers
+- name: "Remove sudoers"
   file:
-    path: "/etc/sudoers.d/{{ sudoers_filename }}"
-    state: absent
+    path: "/etc/sudoers.d/{{ item.name }}"
+    state: "absent"
+  with_items: "{{ sudoers }}"
   when: sudoers_remove
