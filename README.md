@@ -1,13 +1,8 @@
-# Deprecation warning
-
-Unmaintained project. Please, use good alternative: [wtcross.sudoers](https://galaxy.ansible.com/wtcross/sudoers/)
-
 # Simple sudoers role
 
 This role installs sudo package, ensure that /etc/sudoers.d included and
-create or remove sudoers files in /etc/sudoers.d.
-For now, each sudoer has access to all commands within a variable set of users, and global setting determines whether
-NOPASSWD is set or not.
+Create or remove sudoers files in /etc/sudoers.d/
+Allow users and groups to run command as root without Password.
 
 ## Variables
 
@@ -16,9 +11,6 @@ NOPASSWD is set or not.
    permission to execute commands as. Use '%foo' to specify that users in a given
    group have sudo access.
    * defaults: []
-   * example: Check ```ansible-sudoers.yml``` playbook for an example where user
-   ```testone``` as permission to execute commands as users ```vagrant``` and
-   ```root```and user ```testtwo``` has permission to execute commands as any user.
  * sudoers_nopasswd - if set, NOPASSWD is added to all sudoers entries. Use this
    when users don't have passwords set.
    * default: true
@@ -26,5 +18,22 @@ NOPASSWD is set or not.
    of create.
    * default: false
 
-## TODO
- * Ability to create users with not full access
+## Example playbook
+```
+---
+- hosts: <my_hosts>
+  vars:
+    sudoers:
+      - name: "<file_name>"
+        cmd: "<command_list_allow_without_PASSWORD>"
+        users:
+          - "<user1>"
+          - "<user2>"
+          - ...
+        groups:
+          - "<group1>"
+          - "<group2>
+          - ...
+  roles:
+    - ansible-sudoers
+```
