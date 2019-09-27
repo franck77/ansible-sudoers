@@ -34,12 +34,12 @@
     owner: root
     group: root
     validate: "/usr/sbin/visudo -cf %s"
+  when: item.remove is not defined or item.remove == false
   with_items: "{{ sudoers }}"
-  when: not sudoers_remove
 
 - name: "Remove sudoers"
   file:
     path: "/etc/sudoers.d/{{ item.name }}"
     state: "absent"
+  when: item.remove is defined and item.remove == "true"
   with_items: "{{ sudoers }}"
-  when: sudoers_remove
