@@ -6,25 +6,22 @@ Allow users and groups to run command as root without Password.
 
 ## Variables
 
- * sudoers_filename - file name in /etc/sudoers.d (required)
- * sudoers - A dictonary of users who have sudo access and to what users they have
-   permission to execute commands as. Use '%foo' to specify that users in a given
-   group have sudo access.
+ * sudoers - A dictonary of users, groups, commands, filename
    * defaults: []
- * sudoers_nopasswd - if set, NOPASSWD is added to all sudoers entries. Use this
-   when users don't have passwords set.
-   * default: true
- * sudoers_remove - if enabled, remove /etc/sudoers.d/{{ sudoers\_filename }} instead
+ * sudoers.users - List of users who can run command without password as root
+ * sudoers.groups - List of group who can run command without password as root
+ * sudoers.cmd - List of command who can run the users and groups without password (separated by ",")
+ * sudoers.remove - if enabled, remove /etc/sudoers.d/{{ sudoers.name }} instead
    of create.
    * default: false
 
-## Example playbook
+## Example playbook 
 ```
 ---
 - hosts: <my_hosts>
   vars:
     sudoers:
-      - name: "<file_name>"
+      - name: "<file_name>" ### ADD NEW SUDOERS
         cmd: "<command_list_allow_without_PASSWORD>"
         users:
           - "<user1>"
@@ -34,6 +31,8 @@ Allow users and groups to run command as root without Password.
           - "<group1>"
           - "<group2>
           - ...
+      - name: "<file_name>" ### REMOVE OLD SUDOERS
+        remove: "true"
   roles:
     - ansible-sudoers
 ```
