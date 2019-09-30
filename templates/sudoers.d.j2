@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
-User_Alias {{ item.name }} = {{ item.users | join(',') }}{% for group in item.groups %},%{{ group }}{% endfor %}
+User_Alias {{ item.name }} = {% if item.users is defined %}{{ item.users | join(',') }}{% endif %}{% if item.groups is defined %}{% for group in item.groups %},%{{ group }}{% endfor %}{% endif %}
 
 {{ item.name }} ALL=(ALL) NOPASSWD: {{ item.cmd }}
 
